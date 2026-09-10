@@ -10,5 +10,9 @@ export const testData = {
     EmptyUser: {
         username: '',
         password: ''
+    },
+    Product: {
+        backpack: 'Sauce Labs Backpack',
+        bikeLight: 'Sauce Labs Bike Light'
     }
 };
