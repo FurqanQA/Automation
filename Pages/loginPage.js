@@ -1,8 +1,9 @@
 import { loginLocators } from '../Locators/loginLocators';
+import { BasePage } from './basePage';
 
-export class LoginPage {
+export class LoginPage extends BasePage {
     constructor(page) {
-        this.page = page;
+        super(page);
         this.usernameInput = this.page.locator(loginLocators.usernameInput);
         this.passwordInput = this.page.locator(loginLocators.passwordInput);
         this.loginButton = this.page.locator(loginLocators.loginButton);
@@ -18,5 +19,11 @@ export class LoginPage {
 
     async clickLoginButton() {
         await this.loginButton.click();
+    }
+
+     async login(username, password) {
+        await this.enterUsername(username);
+        await this.enterPassword(password);
+        await this.clickLoginButton();
     }
 }

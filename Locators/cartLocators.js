@@ -5,4 +5,5 @@ export const cartLocators = {
     product_desc: 'div[class="inventory_item_desc"]',
     product_price: 'div[class="inventory_item_price"]',
     add_cart_button: 'button[class="btn btn_primary btn_small btn_inventory"]',
+    
 }
