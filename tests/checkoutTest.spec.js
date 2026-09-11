@@ -77,3 +77,5 @@ test('Complete checkout flow', async ({ page }) => {
         completePage.completeHeader
     ).toHaveText('Thank you for your order!');
 });
+
+
