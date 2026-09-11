@@ -1,11 +1,12 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
+import { LoginPage } from "../Pages/loginPage";
+import { InventoryPage } from "../Pages/inventoryPage";
+import { CartPage } from "../Pages/cartPage";
+import { CheckoutPage } from "../Pages/checkoutPage";
+import { testData } from "../Fixture/testData";
+import { OverviewPage } from "../Pages/overviewPage";
+import { CompletePage } from '../Pages/completePage';
 
-import { LoginPage } from '../Pages/loginPage';
-import { InventoryPage } from '../Pages/inventoryPage';
-import { CartPage } from '../Pages/cartPage';
-import { CheckoutPage } from '../Pages/checkoutPage';
-
-import { testData } from '../Fixture/testData';
 
 
 test('Complete checkout flow', async ({ page }) => {
@@ -14,6 +15,8 @@ test('Complete checkout flow', async ({ page }) => {
     const inventoryPage = new InventoryPage(page);
     const cartPage = new CartPage(page);
     const checkoutPage = new CheckoutPage(page);
+    const overviewPage = new OverviewPage(page);
+    const completePage = new CompletePage(page);
 
     // Login
     await page.goto('/');
@@ -23,47 +26,54 @@ test('Complete checkout flow', async ({ page }) => {
         testData.ValidUser.password
     );
 
-    // Verify Inventory
+    // Inventory
     await expect(page.getByText('Products')).toBeVisible();
 
-    // Add product
     await inventoryPage.addProduct(
         testData.Product.backpack
     );
 
-    // Verify cart badge
     expect(
         await inventoryPage.getCartBadgeCount()
     ).toBe(1);
 
-    // Open cart
+    // Cart
     await inventoryPage.openCart();
 
-    // Verify product in cart
     expect(
         await cartPage.verifyProduct(
             testData.Product.backpack
         )
     ).toBe(true);
 
-    // Checkout
     await cartPage.checkout();
 
-    // Verify checkout page
-    await expect(page.getByText('Checkout: Your Information'))
-        .toBeVisible();
+    // Checkout Information
+    await expect(
+        page.getByText('Checkout: Your Information')
+    ).toBeVisible();
 
-    // Fill checkout information
     await checkoutPage.fillCheckoutInformation(
         testData.Checkout.firstName,
         testData.Checkout.lastName,
         testData.Checkout.postalCode
     );
 
-    // Continue
     await checkoutPage.continue();
 
-    // Verify overview page
-    await expect(page.getByText('Checkout: Overview'))
-        .toBeVisible();
+    // Overview
+    await expect(
+        page.getByText('Checkout: Overview')
+    ).toBeVisible();
+
+    expect(
+        await overviewPage.getProductName()
+    ).toBe(testData.Product.backpack);
+
+    await overviewPage.finishOrder();
+
+    // Complete
+    await expect(
+        completePage.completeHeader
+    ).toHaveText('Thank you for your order!');
 });
