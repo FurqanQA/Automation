@@ -1,33 +1,19 @@
-import { test, expect } from "@playwright/test";
-import { LoginPage } from "../Pages/loginPage";
-import { InventoryPage } from "../Pages/inventoryPage";
-import { CartPage } from "../Pages/cartPage";
-import { CheckoutPage } from "../Pages/checkoutPage";
-import { testData } from "../Fixture/testData";
-import { OverviewPage } from "../Pages/overviewPage";
-import { CompletePage } from '../Pages/completePage';
+import { test, expect } from '../Fixture/test';
+import { testData } from '../Fixture/testData';
 
-
-
-test('Complete checkout flow', async ({ page }) => {
-
-    const loginPage = new LoginPage(page);
-    const inventoryPage = new InventoryPage(page);
-    const cartPage = new CartPage(page);
-    const checkoutPage = new CheckoutPage(page);
-    const overviewPage = new OverviewPage(page);
-    const completePage = new CompletePage(page);
-
-    // Login
-    await page.goto('/');
-
-    await loginPage.login(
-        testData.ValidUser.username,
-        testData.ValidUser.password
-    );
+test('Complete checkout flow', async ({
+    loggedIn,
+    inventoryPage,
+    cartPage,
+    checkoutPage,
+    overviewPage,
+    completePage
+}) => {
 
     // Inventory
-    await expect(page.getByText('Products')).toBeVisible();
+    await expect(
+        loggedIn.getByText('Products')
+    ).toBeVisible();
 
     await inventoryPage.addProduct(
         testData.Product.backpack
@@ -48,9 +34,9 @@ test('Complete checkout flow', async ({ page }) => {
 
     await cartPage.checkout();
 
-    // Checkout Information
+    // Checkout
     await expect(
-        page.getByText('Checkout: Your Information')
+        loggedIn.getByText('Checkout: Your Information')
     ).toBeVisible();
 
     await checkoutPage.fillCheckoutInformation(
@@ -63,7 +49,7 @@ test('Complete checkout flow', async ({ page }) => {
 
     // Overview
     await expect(
-        page.getByText('Checkout: Overview')
+        loggedIn.getByText('Checkout: Overview')
     ).toBeVisible();
 
     expect(
@@ -77,5 +63,3 @@ test('Complete checkout flow', async ({ page }) => {
         completePage.completeHeader
     ).toHaveText('Thank you for your order!');
 });
-
-
