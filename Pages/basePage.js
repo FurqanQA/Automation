@@ -1,9 +1,10 @@
 export class BasePage {
+
     constructor(page) {
         this.page = page;
     }
 
-    async  goback() {
+    async goBack() {
         await this.page.goBack();
     }
 

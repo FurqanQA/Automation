@@ -1,11 +1,18 @@
 import { test, expect } from '../Fixture/test';
 import { testData } from '../Fixture/testData';
 
-test('Add product to cart', async ({ loggedIn, inventoryPage }) => {
+test('Add product to cart', async ({
+    page,
+    inventoryPage
+}) => {
 
-    await expect(loggedIn.getByText('Products')).toBeVisible();
+    await page.goto('/inventory.html');
 
-    await inventoryPage.addProduct(
+    await expect(
+        page.getByText('Products')
+    ).toBeVisible();
+
+    await inventoryPage.addProductToCart(
         testData.Product.backpack
     );
 

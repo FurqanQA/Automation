@@ -1,65 +1,60 @@
-import { test, expect } from '../Fixture/test';
-import { testData } from '../Fixture/testData';
+import { test, expect } from "../Fixture/test";
+import { testData } from "../Fixture/testData";
 
-test('Complete checkout flow', async ({
-    loggedIn,
-    inventoryPage,
-    cartPage,
-    checkoutPage,
-    overviewPage,
-    completePage
+test("Complete checkout flow", async ({
+  page,
+  inventoryPage,
+  cartPage,
+  checkoutPage,
+  overviewPage,
+  completePage,
 }) => {
+  // Inventory
 
-    // Inventory
-    await expect(
-        loggedIn.getByText('Products')
-    ).toBeVisible();
+  await page.goto("/inventory.html");
 
-    await inventoryPage.addProduct(
-        testData.Product.backpack
-    );
+  await expect(page.getByText("Products")).toBeVisible();
 
-    expect(
-        await inventoryPage.getCartBadgeCount()
-    ).toBe(1);
+  await inventoryPage.addProductToCart(testData.Product.backpack);
 
-    // Cart
-    await inventoryPage.openCart();
+  expect(await inventoryPage.getCartBadgeCount()).toBe(1);
 
-    expect(
-        await cartPage.verifyProduct(
-            testData.Product.backpack
-        )
-    ).toBe(true);
+  // Cart
 
-    await cartPage.checkout();
+  // Cart
 
-    // Checkout
-    await expect(
-        loggedIn.getByText('Checkout: Your Information')
-    ).toBeVisible();
+  await inventoryPage.openCart();
 
-    await checkoutPage.fillCheckoutInformation(
-        testData.Checkout.firstName,
-        testData.Checkout.lastName,
-        testData.Checkout.postalCode
-    );
+  await cartPage.expectProductVisible(testData.Product.backpack);
 
-    await checkoutPage.continue();
+  await cartPage.checkout();
 
-    // Overview
-    await expect(
-        loggedIn.getByText('Checkout: Overview')
-    ).toBeVisible();
+  // Checkout
 
-    expect(
-        await overviewPage.getProductName()
-    ).toBe(testData.Product.backpack);
+  await expect(page.getByText("Checkout: Your Information")).toBeVisible();
 
-    await overviewPage.finishOrder();
+  await checkoutPage.fillCheckoutInformation(
+    testData.Checkout.firstName,
+    testData.Checkout.lastName,
+    testData.Checkout.postalCode,
+  );
 
-    // Complete
-    await expect(
-        completePage.completeHeader
-    ).toHaveText('Thank you for your order!');
+  await checkoutPage.continue();
+
+  // Overview
+
+  await expect(page.getByText("Checkout: Overview")).toBeVisible();
+
+  expect(await overviewPage.getProductName()).toBe(testData.Product.backpack);
+
+  await overviewPage.finishOrder();
+
+  // Complete
+
+  expect(await completePage.getCompleteMessage()).toBe(
+    "Thank you for your order!",
+  );
+
+  console.log(await cartPage.cartItems.count());
+  console.log(await cartPage.cartItems.allTextContents());
 });

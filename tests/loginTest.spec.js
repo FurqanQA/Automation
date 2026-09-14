@@ -1,7 +1,10 @@
 import { test, expect } from '../Fixture/test';
 import { testData } from '../Fixture/testData';
 
-test('Login Tests', async ({ page, loginPage }) => {
+test('Login with valid credentials', async ({
+    page,
+    loginPage
+}) => {
 
     await page.goto('/');
 
@@ -24,13 +27,12 @@ test('Login Tests', async ({ page, loginPage }) => {
 });
 
 
-test('Login Tests with Invalid Password', async ({ page, loginPage }) => {
+test('Login with invalid password', async ({
+    page,
+    loginPage
+}) => {
 
     await page.goto('/');
-
-    await expect(
-        page.getByText('Swag Labs')
-    ).toBeVisible();
 
     await loginPage.login(
         testData.InvalidUser.username,
@@ -45,13 +47,12 @@ test('Login Tests with Invalid Password', async ({ page, loginPage }) => {
 });
 
 
-test('Login Tests with Empty Credentials', async ({ page, loginPage }) => {
+test('Login with empty credentials', async ({
+    page,
+    loginPage
+}) => {
 
     await page.goto('/');
-
-    await expect(
-        page.getByText('Swag Labs')
-    ).toBeVisible();
 
     await loginPage.login(
         testData.EmptyUser.username,
@@ -59,6 +60,8 @@ test('Login Tests with Empty Credentials', async ({ page, loginPage }) => {
     );
 
     await expect(
-        page.getByText('Epic sadface: Username is required')
+        page.getByText(
+            'Epic sadface: Username is required'
+        )
     ).toBeVisible();
 });

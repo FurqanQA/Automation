@@ -47,7 +47,12 @@ export class CheckoutPage extends BasePage {
         await this.cancelButton.click();
     }
 
-    async fillCheckoutInformation(firstName, lastName, postalCode) {
+    async fillCheckoutInformation(
+        firstName,
+        lastName,
+        postalCode
+    ) {
+
         await this.enterFirstName(firstName);
         await this.enterLastName(lastName);
         await this.enterPostalCode(postalCode);

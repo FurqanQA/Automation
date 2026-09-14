@@ -7,8 +7,6 @@ import { CheckoutPage } from '../Pages/checkoutPage';
 import { OverviewPage } from '../Pages/overviewPage';
 import { CompletePage } from '../Pages/completePage';
 
-import { testData } from './testData';
-
 export const test = base.extend({
 
     loginPage: async ({ page }, use) => {
@@ -33,19 +31,8 @@ export const test = base.extend({
 
     completePage: async ({ page }, use) => {
         await use(new CompletePage(page));
-    },
-
-    loggedIn: async ({ page, loginPage }, use) => {
-
-        await page.goto('/');
-
-        await loginPage.login(
-            testData.ValidUser.username,
-            testData.ValidUser.password
-        );
-
-        await use(page);
     }
+
 });
 
 export { expect };

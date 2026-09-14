@@ -6,14 +6,37 @@ export class OverviewPage extends BasePage {
     constructor(page) {
         super(page);
 
-        this.cartItems = this.page.locator(overviewLocators.cartItems);
-        this.productName = this.page.locator(overviewLocators.productName);
-        this.productPrice = this.page.locator(overviewLocators.productPrice);
-        this.subtotal = this.page.locator(overviewLocators.subtotal);
-        this.tax = this.page.locator(overviewLocators.tax);
-        this.total = this.page.locator(overviewLocators.total);
-        this.finishButton = this.page.locator(overviewLocators.finishButton);
-        this.cancelButton = this.page.locator(overviewLocators.cancelButton);
+        this.cartItems = this.page.locator(
+            overviewLocators.cartItems
+        );
+
+        this.productName = this.page.locator(
+            overviewLocators.productName
+        );
+
+        this.productPrice = this.page.locator(
+            overviewLocators.productPrice
+        );
+
+        this.subtotal = this.page.locator(
+            overviewLocators.subtotal
+        );
+
+        this.tax = this.page.locator(
+            overviewLocators.tax
+        );
+
+        this.total = this.page.locator(
+            overviewLocators.total
+        );
+
+        this.finishButton = this.page.locator(
+            overviewLocators.finishButton
+        );
+
+        this.cancelButton = this.page.locator(
+            overviewLocators.cancelButton
+        );
     }
 
     async getProductName() {
